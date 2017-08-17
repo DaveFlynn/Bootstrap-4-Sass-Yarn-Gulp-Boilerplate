@@ -4,7 +4,8 @@ var gulp = require('gulp'),
 		filter = require('gulp-filter'),
 		autoprefixer = require('gulp-autoprefixer'),
 		concat = require('gulp-concat'),
-		uglify = require('gulp-uglify');
+		uglify = require('gulp-uglify'),
+		imagemin = require('gulp-imagemin');
 		
 var config = {
 	stylesPath: 'assets/styles',
@@ -17,6 +18,12 @@ var config = {
 gulp.task('icons', function() { 
 	return gulp.src('./node_modules/font-awesome/fonts/**.*') 
 		.pipe(gulp.dest(config.outputDir + '/fonts')); 
+});
+
+gulp.task('images', function() { 
+	return gulp.src(config.imagesPath + '/*')
+		.pipe(imagemin())
+		.pipe(gulp.dest(config.outputDir + '/images'))
 });
 
 gulp.task('css', function() {
@@ -55,6 +62,7 @@ gulp.task('js', function() {
 gulp.task('watch', function(){
 	gulp.watch([config.stylesPath + '**/*.scss', config.stylesPath + '**/*.sass', config.stylesPath + '**/*.css'], ['css']);
 	gulp.watch([config.jsPath + '**/*.js'], ['js']);
+	gulp.watch([config.imagesPath + '/**/*'], ['images']);
 });
 
 gulp.task('default', ['icons', 'css', 'jquery', 'bootstrap-js', 'js']);
